@@ -5,7 +5,9 @@
 #include <memory>
 #include <chrono>
 #include <sstream>
+#include <unistd.h>
 
+#if 0
 #include <boost/shared_ptr.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -15,20 +17,25 @@
 
 #include "thrift/gen-cpp/test_types.h"
 #include "thrift/gen-cpp/test_constants.h"
+#endif
 
 #include <capnp/message.h>
 #include <capnp/serialize.h>
 
 #include "protobuf/test.pb.h"
 #include "capnproto/test.capnp.h"
+
+#if 0
 #include "boost/record.hpp"
 #include "msgpack/record.hpp"
 #include "cereal/record.hpp"
 #include "avro/record.hpp"
 #include "flatbuffers/test_generated.h"
 #include "yas/record.hpp"
-
+#endif
 #include "data.hpp"
+
+#if 0
 
 enum class ThriftSerializationProto { Binary, Compact };
 
@@ -122,6 +129,7 @@ thrift_serialization_test(size_t iterations, ThriftSerializationProto proto = Th
 
     std::cout << tag << " time = " << duration << " milliseconds" << std::endl << std::endl;
 }
+#endif
 
 void
 protobuf_serialization_test(size_t iterations)
@@ -226,6 +234,8 @@ capnproto_serialization_test(size_t iterations)
 
     std::cout << "capnproto: time = " << duration << " milliseconds" << std::endl << std::endl;
 }
+
+#if 0
 
 void
 boost_serialization_test(size_t iterations)
@@ -517,6 +527,7 @@ yas_serialization_test(size_t iterations)
         std::cout << "yas: time = " << duration << " milliseconds" << std::endl << std::endl;
     }
 }
+#endif
 
 int
 main(int argc, char** argv)
@@ -532,8 +543,9 @@ main(int argc, char** argv)
         return EXIT_SUCCESS;
     }
 
-    size_t iterations;
+    size_t iterations = atoi(argv[1]);
 
+#if 0
     try {
         iterations = boost::lexical_cast<size_t>(argv[1]);
     } catch (std::exception& exc) {
@@ -541,6 +553,7 @@ main(int argc, char** argv)
         std::cerr << "First positional argument must be an integer." << std::endl;
         return EXIT_FAILURE;
     }
+#endif
 
     std::set<std::string> names;
 
@@ -555,6 +568,7 @@ main(int argc, char** argv)
     /*std::cout << "total size: " << sizeof(kIntegerValue) * kIntegersCount + kStringValue.size() * kStringsCount << std::endl;*/
 
     try {
+#if 0
         if (names.empty() || names.find("thrift-binary") != names.end()) {
             thrift_serialization_test(iterations, ThriftSerializationProto::Binary);
         }
@@ -562,6 +576,7 @@ main(int argc, char** argv)
         if (names.empty() || names.find("thrift-compact") != names.end()) {
             thrift_serialization_test(iterations, ThriftSerializationProto::Compact);
         }
+#endif
 
         if (names.empty() || names.find("protobuf") != names.end()) {
             protobuf_serialization_test(iterations);
@@ -571,6 +586,7 @@ main(int argc, char** argv)
             capnproto_serialization_test(iterations);
         }
 
+#if 0
         if (names.empty() || names.find("boost") != names.end()) {
             boost_serialization_test(iterations);
         }
@@ -598,6 +614,7 @@ main(int argc, char** argv)
         if (names.empty() || names.find("yas-compact") != names.end()) {
             yas_serialization_test<yas::binary | yas::no_header | yas::compacted>(iterations);
         }
+#endif
     } catch (std::exception& exc) {
         std::cerr << "Error: " << exc.what() << std::endl;
         return EXIT_FAILURE;

@@ -1,0 +1,1 @@
+g++ -std=c++14 -Wall benchmark.cpp protobuf/test.pb.cc capnproto/test.capnp.c++ $(pkg-config --cflags --libs protobuf) $(pkg-config --cflags --libs capnp) -Icapnproto -Iprotobuf
